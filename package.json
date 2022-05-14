@@ -1,0 +1,21 @@
+{
+  "name": "fragments",
+  "private": true,
+  "version": "0.0.1",
+  "description": "lab 1 - Fragments node.js based REST API using express",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/serach25/fragments.git"
+  },
+  "keywords": [],
+  "author": "Serach Boes",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/serach25/fragments/issues"
+  },
+  "homepage": "https://github.com/serach25/fragments#readme"
+}
