@@ -3,7 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
 const passport = require('passport');
-const authorization = require('./authorization');
+const authorization = require('./authorization/cognito');
 
 // version and author from our package.json file
 //const { version, author } = require('../package.json');
