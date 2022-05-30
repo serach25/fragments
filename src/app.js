@@ -66,7 +66,7 @@ app.use((err, req, res, next) => {
   const errorResponse = createErrorResponse(status, message);
   res.status(status).json(
     errorResponse
-    /* status: 'error',
+    /*  status: 'error',
     error: {
       message,
       code: status,
