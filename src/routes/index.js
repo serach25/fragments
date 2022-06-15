@@ -36,14 +36,7 @@ router.get('/', (req, res) => {
 
   const data = { author, githubUrl: 'https://github.com/serach25/fragments', version };
   const successResponse = createSuccessResponse(data);
-  res.status(200).json(
-    successResponse
-    /*status: 'ok',
-    author,
-    // Use your own GitHub URL for this...
-    githubUrl: 'https://github.com/serach25/fragments',
-    version,*/
-  );
+  res.status(200).json(successResponse);
 });
 
 module.exports = router;

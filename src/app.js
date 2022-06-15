@@ -64,14 +64,7 @@ app.use((err, req, res, next) => {
   }
 
   const errorResponse = createErrorResponse(status, message);
-  res.status(status).json(
-    errorResponse
-    /*  status: 'error',
-    error: {
-      message,
-      code: status,
-    },*/
-  );
+  res.status(status).json(errorResponse);
 });
 
 // Export our `app` so we can access it in server.js
