@@ -169,7 +169,7 @@ class Fragment {
   static isSupportedType(value) {
     // TODO
     var supported;
-    if (value === 'text/plain' || value === 'text/plain; charset=utf-8') {
+    if (value.startsWith('text/') || value === 'application/json') {
       supported = true;
     } else {
       supported = false;
