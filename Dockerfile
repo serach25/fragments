@@ -8,6 +8,8 @@
 
 FROM node:16.15.0-alpine3.15@sha256:1a9a71ea86aad332aa7740316d4111ee1bd4e890df47d3b5eff3e5bded3b3d10 AS dependencies
 
+ENV NODE_ENV=production
+
 LABEL maintainer="Serach Boes <saboes@myseneca.com>"
 LABEL description="Fragments node.js microservice"
 
@@ -40,6 +42,11 @@ RUN npm install
 
 FROM node:16.15.0-alpine3.15@sha256:1a9a71ea86aad332aa7740316d4111ee1bd4e890df47d3b5eff3e5bded3b3d10 AS build
 
+# Add init process and curl
+RUN apk update && apk add --no-cache \
+    dumb-init=1.2.5-r1 \
+    curl=7.80.0-r2
+
 WORKDIR /app
 # Copy the generated dependencies(node_modules/)
 COPY --chown=node:node --from=dependencies /app /app
@@ -53,14 +60,16 @@ COPY --chown=node:node ./tests/.htpasswd ./tests/.htpasswd
 # Switch user to node before we run the app
 USER node
 
-# ENTRYPOINT ["/sbin/dumb-init", "--"]
-
-# Start the container by running our server
-CMD ["node", "src/index.js"]
-
 # We run our service on port 8080
 EXPOSE 8080
 
+# Health check to see if the docker instance is healthy
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+  CMD curl --fail localhost:8080 || exit 1
 
+# Start the container by running our server
+ENTRYPOINT ["dumb-init", "--"]
+
+CMD [ "node", "src/index.js" ]
 
 

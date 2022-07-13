@@ -18,8 +18,6 @@ module.exports = async (req, res) => {
     try {
       ///generate a new fragment metadata record for the data
       const fragment = new Fragment({ ownerId: req.user, type: type });
-      //console.log(fragment);
-      //both the data and metadata are stored
       logger.info('saving fragment data');
       await fragment.setData(req.body);
       fragment.save();

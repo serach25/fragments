@@ -35,6 +35,9 @@ router.post('/fragments', rawBody(), require('./post'));
 // Use a raw body parser for POST, which will give a `Buffer` Object or `{}` at `req.body`
 router.get('/fragments/:id', require('./getById'));
 
+//returns a specific fragment's metadata
+router.get('/fragments/:id/info', require('./getInfoById'));
+
 // Other routes will go here later on...
 
 module.exports = router;
