@@ -3,8 +3,6 @@ const { createSuccessResponse, createErrorResponse } = require('../../response')
 
 const { Fragment } = require('../../../src/model/fragment');
 
-const contentType = require('content-type');
-
 const logger = require('../../logger');
 
 const apiURL = process.env.API_URL || process;
