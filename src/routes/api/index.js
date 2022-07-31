@@ -38,6 +38,9 @@ router.get('/fragments/:id', require('./getById'));
 //returns a specific fragment's metadata
 router.get('/fragments/:id/info', require('./getInfoById'));
 
+//deletes a fragment
+router.delete('/fragments/:id', require('./delete'));
+
 // Other routes will go here later on...
 
 module.exports = router;
