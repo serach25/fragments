@@ -1,7 +1,7 @@
 {
   "name": "fragments",
   "private": true,
-  "version": "0.7.12",
+  "version": "0.7.13",
   "description": "lab 1 - Fragments node.js based REST API using express",
   "main": "index.js",
   "scripts": {
