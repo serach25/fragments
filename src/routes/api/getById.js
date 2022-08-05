@@ -28,7 +28,7 @@ module.exports = async (req, res) => {
     //retrieve fragment by id
     try {
       logger.info('getting fragment by id');
-      const fragment = await Fragment.byId(user, id);
+      const fragment = new Fragment(await Fragment.byId(user, id));
       logger.info('getting fragment data');
       const fragmentData = await fragment.getData();
       var type = fragment.type;

@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
 
   try {
     logger.info('getting fragment info by id');
-    const fragment = await Fragment.byId(user, id);
+    const fragment = new Fragment(await Fragment.byId(user, id));
     logger.info('returning fragment metadata');
     res.status(200).json(
       createSuccessResponse({
