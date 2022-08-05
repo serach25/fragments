@@ -1,5 +1,4 @@
 # tests/integration/lab-10-dynamodb.hurl
-
 # 1. POST a new JSON fragment to http://localhost:8080 as an authorized user. 
 # The fragment's body should be the JSON value, { "service": "DynamoDB" }
 # Authenticated POST to /v1/fragments
