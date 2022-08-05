@@ -2,7 +2,6 @@
 
 # 1. POST a new JSON fragment to http://localhost:8080 as an authorized user. 
 # The fragment's body should be the JSON value, { "service": "DynamoDB" }
-
 # Authenticated POST to /v1/fragments
 POST http://localhost:8080/v1/fragments
 # user1@email.com:password1
