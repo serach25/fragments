@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
   try {
     //If no such fragment exists with the given id, returns an HTTP 404 with an appropriate error message.
     logger.info('getting fragment by id');
-    const fragment = await Fragment.byId(user, id);
+    const fragment = new Fragment(await Fragment.byId(user, id));
 
     //If the Content-Type of the request does not match the existing fragment's type, returns an HTTP 400 with an appropriate error message. A fragment's type can not be changed after it is created.
     if (fragment.type === req.get('Content-Type')) {
