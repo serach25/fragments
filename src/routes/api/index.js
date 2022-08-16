@@ -41,6 +41,9 @@ router.get('/fragments/:id/info', require('./getInfoById'));
 //deletes a fragment
 router.delete('/fragments/:id', require('./delete'));
 
+//updates a fragment's metadata
+router.put('/fragments/:id', rawBody(), require('./put'));
+
 // Other routes will go here later on...
 
 module.exports = router;
