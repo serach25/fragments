@@ -28,6 +28,8 @@ module.exports = async (req, res) => {
   if (req.params.id.includes('.')) {
     id = req.params.id.substr(0, req.params.id.indexOf('.'));
     var extension = req.params.id.substr(req.params.id.indexOf('.'));
+  } else {
+    extension = '';
   }
 
   //valid extensions
