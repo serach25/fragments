@@ -45,6 +45,7 @@ Authorization: Basic dXNlcjFAZW1haWwuY29tOnBhc3N3b3JkMQ==
 # [Asserts]
 # body == "Hello S3!"
 
+
 # 5 DELETE the fragment using the url as an authorized user.
 # 6 Confirm that the server returns a 200.
 
