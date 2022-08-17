@@ -50,14 +50,13 @@ module.exports = async (req, res) => {
     try {
       //valid conversions
       if (fragment.formats.includes(extension)) {
-        console.log('IS IT COMING HERE?');
         //convert markdown to html
         if (extension === 'text/html' && type === 'text/markdown') {
           data = md.render(fragmentData.toString());
           logger.info('setting content-type as converted type');
           res.setHeader('Content-type', 'text/html');
           logger.info('returning converted fragment data');
-          res.status(200).send(data);
+          res.status(200).send(data.toString('base64'));
         }
         //convert markdown to plain text
         else if (extension === 'text/plain' && type === 'text/markdown') {
@@ -96,15 +95,11 @@ module.exports = async (req, res) => {
 
         //convert any image to any other image format
         else if (extension.startsWith('image/') && type.startsWith('image/')) {
-          console.log('IS IT COMING HERE22222222?');
           const convertTo = extension.substring(6);
-          console.log('IS IT COMING HERE33333333333?' + convertTo);
           data = await sharp(fragmentData).toFormat(convertTo).toBuffer();
-          console.log('IS IT COMING HERE44444444444?');
           logger.info('setting content-type as converted type');
           res.setHeader('Content-type', type);
           logger.info('returning converted fragment data');
-          console.log('IS IT COMING HERE55555555555555?');
           res.status(200).send(data.toString('base64'));
         }
         //if extension is the same as fragment type
