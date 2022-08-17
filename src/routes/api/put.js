@@ -1,10 +1,7 @@
 //PUT /fragments:id can update an authenticated user's existing fragment
 const { createSuccessResponse, createErrorResponse } = require('../../response');
-
 const { Fragment } = require('../../../src/model/fragment');
-
 const logger = require('../../logger');
-
 //Allows the authenticated user to update (i.e., replace) the data for their existing fragment with the specified id.
 
 module.exports = async (req, res) => {
