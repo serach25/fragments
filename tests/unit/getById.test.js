@@ -4,8 +4,8 @@ const request = require('supertest');
 
 const app = require('../../src/app');
 //const logger = require('../../src/logger');
-const { Fragment } = require('../../src/model/fragment');
-const hash = require('crypto');
+//const { Fragment } = require('../../src/model/fragment');
+//const hash = require('crypto');
 
 describe('GETById /v1/fragments/:id', () => {
   // If the request is missing the Authorization header, it should be forbidden
@@ -28,16 +28,14 @@ describe('GETById /v1/fragments/:id', () => {
   //Using a valid username/password pair with incorrect extension, should return a 415 error
   test('Incorrect Extension', async () => {
     //create a fragment through post
-    await request(app)
+    const postResponse = await request(app)
       .post('/v1/fragments')
       .auth('user1@email.com', 'password1')
       .set('Content-type', 'text/plain')
       .send('abc');
 
     //get fragment id
-    const ownerId = hash.createHash('sha256').update('user1@email.com').digest('hex');
-    const savedFragment = await Fragment.byUser(ownerId, true);
-    const id = savedFragment.at(0).id;
+    var id = JSON.parse(postResponse.text).fragment.id;
 
     const getRes = await request(app)
       .get(`/v1/fragments/${id}.zip`)
@@ -48,16 +46,14 @@ describe('GETById /v1/fragments/:id', () => {
   // Using a valid username/password pair with correct extension
   test('Correct .txt extension', async () => {
     //create a fragment through post
-    await request(app)
+    const postResponse = await request(app)
       .post('/v1/fragments')
       .auth('user1@email.com', 'password1')
       .set('Content-type', 'text/plain')
       .send('abc');
 
     //get fragment id
-    const ownerId = hash.createHash('sha256').update('user1@email.com').digest('hex');
-    const savedFragment = await Fragment.byUser(ownerId, true);
-    const id = savedFragment.at(0).id;
+    var id = JSON.parse(postResponse.text).fragment.id;
 
     const getRes = await request(app)
       .get(`/v1/fragments/${id}.txt`)
@@ -69,21 +65,97 @@ describe('GETById /v1/fragments/:id', () => {
   test('authenticated users get a fragment with correct fragment id', async () => {
     const data = Buffer.from('abc');
     //create a fragment through post
-    await request(app)
+    const postResponse = await request(app)
       .post('/v1/fragments')
       .auth('user1@email.com', 'password1')
       .set('Content-type', 'text/plain')
       .send(data);
 
     //get fragment id
-    const ownerId = hash.createHash('sha256').update('user1@email.com').digest('hex');
-    const savedFragment = await Fragment.byUser(ownerId, true);
-    const id = savedFragment.at(0).id;
+    var id = JSON.parse(postResponse.text).fragment.id;
 
     const getRes = await request(app)
       .get(`/v1/fragments/${id}`)
       .auth('user1@email.com', 'password1');
     expect(getRes.statusCode).toBe(200);
     expect(getRes.text).toBe(data.toString());
+  });
+
+  /*CHECK CONVERSIONS*/
+  /*
+    text/markdown -> .html, .txt
+    text/html	    -> .txt
+    application/json -> .txt 
+  */
+  // Using a valid username/password pair, get markdown fragment with html extension
+  test('Convert .md to .html extension', async () => {
+    //create a fragment through post
+    const postResponse = await request(app)
+      .post('/v1/fragments')
+      .auth('user1@email.com', 'password1')
+      .set('Content-type', 'text/markdown')
+      .send('# A fragment');
+
+    //get fragment id
+    var id = JSON.parse(postResponse.text).fragment.id;
+
+    const getResponse = await request(app)
+      .get(`/v1/fragments/${id}.html`)
+      .auth('user1@email.com', 'password1');
+    expect(getResponse.statusCode).toBe(200);
+  });
+
+  // Using a valid username/password pair, get markdown fragment with txt extension
+  test('Convert .md to .txt extension', async () => {
+    //create a fragment through post
+    const postResponse = await request(app)
+      .post('/v1/fragments')
+      .auth('user1@email.com', 'password1')
+      .set('Content-type', 'text/markdown')
+      .send('# A fragment');
+
+    //get fragment id
+    var id = JSON.parse(postResponse.text).fragment.id;
+
+    const getResponse = await request(app)
+      .get(`/v1/fragments/${id}.txt`)
+      .auth('user1@email.com', 'password1');
+    expect(getResponse.statusCode).toBe(200);
+  });
+
+  // Using a valid username/password pair, get html fragment with txt extension
+  test('Convert .md to .txt extension', async () => {
+    //create a fragment through post
+    const postResponse = await request(app)
+      .post('/v1/fragments')
+      .auth('user1@email.com', 'password1')
+      .set('Content-type', 'text/html')
+      .send('<h1>A fragment</h1>');
+
+    //get fragment id
+    var id = JSON.parse(postResponse.text).fragment.id;
+
+    const getResponse = await request(app)
+      .get(`/v1/fragments/${id}.txt`)
+      .auth('user1@email.com', 'password1');
+    expect(getResponse.statusCode).toBe(200);
+  });
+
+  // Using a valid username/password pair, get json fragment with txt extension
+  test('Convert .md to .txt extension', async () => {
+    //create a fragment through post
+    const postResponse = await request(app)
+      .post('/v1/fragments')
+      .auth('user1@email.com', 'password1')
+      .set('Content-type', 'application/json')
+      .send('{"name":"A fragment"}');
+
+    //get fragment id
+    var id = JSON.parse(postResponse.text).fragment.id;
+
+    const getResponse = await request(app)
+      .get(`/v1/fragments/${id}.txt`)
+      .auth('user1@email.com', 'password1');
+    expect(getResponse.statusCode).toBe(200);
   });
 });

@@ -2,72 +2,54 @@ const request = require('supertest');
 const app = require('../../src/app');
 
 describe('PUT /v1/fragments/:id', () => {
-  // Using a valid username/password pair with correct fragment id
-  test('authenticated users update a fragment', async () => {
-    const data = Buffer.from('This is fragment');
-    const postRes = await request(app)
-      .post('/v1/fragments')
-      .auth('user1@email.com', 'password1')
-      .set('Content-Type', 'text/plain')
-      .send(data);
-    var id = JSON.parse(postRes.text).fragment.id;
-    const data2 = Buffer.from('UPD:This is fragment');
-    const putRes = await request(app)
-      .put(`/v1/fragments/${id}`)
-      .auth('user1@email.com', 'password1')
-      .set('Content-Type', 'text/plain')
-      .send(data2);
-    expect(putRes.statusCode).toBe(200);
-  });
+  //test unauthenticated requests
+  test('unauthenticated requests are denied', () =>
+    request(app).delete('/v1/fragments/:id').expect(401));
 
-  test('unauthenticated users updates a fragment', async () => {
-    const data = Buffer.from('This is fragment');
-    const postRes = await request(app)
+  // Using a valid username/password pair with correct fragment id
+  test('authenticated user updates a fragment', async () => {
+    const postResponse = await request(app)
       .post('/v1/fragments')
       .auth('user1@email.com', 'password1')
       .set('Content-Type', 'text/plain')
-      .send(data);
-    var id = JSON.parse(postRes.text).fragment.id;
-    const data2 = Buffer.from('UPD: This is fragment');
-    const putRes = await request(app)
+      .send('A fragment');
+    var id = JSON.parse(postResponse.text).fragment.id;
+    const putResponse = await request(app)
       .put(`/v1/fragments/${id}`)
+      .auth('user1@email.com', 'password1')
       .set('Content-Type', 'text/plain')
-      .send(data2);
-    expect(putRes.statusCode).toBe(401);
+      .send('Updated fragment');
+    expect(putResponse.statusCode).toBe(200);
   });
 
   test('authenticated users updates an nonexisting fragment', async () => {
-    const data = Buffer.from('This is fragment');
     await request(app)
       .post('/v1/fragments')
       .auth('user1@email.com', 'password1')
       .set('Content-Type', 'text/plain')
-      .send(data);
-    var id = 1;
-    const data2 = Buffer.from('UPD: This is fragment');
-    const putRes = await request(app)
+      .send('A fragment');
+    var id = 123;
+    const putResponse = await request(app)
       .put(`/v1/fragments/${id}`)
       .set('Content-Type', 'text/plain')
       .auth('user1@email.com', 'password1')
-      .send(data2);
-    expect(putRes.statusCode).toBe(404);
+      .send('Updated fragment');
+    expect(putResponse.statusCode).toBe(404);
   });
 
   // Using a valid username/password pair with correct fragment id but incorrect type
   test('authenticated users update a fragment', async () => {
-    const data = Buffer.from('This is fragment');
-    const postRes = await request(app)
+    const postResponse = await request(app)
       .post('/v1/fragments')
       .auth('user1@email.com', 'password1')
       .set('Content-Type', 'text/plain')
-      .send(data);
-    var id = JSON.parse(postRes.text).fragment.id;
-    const data2 = Buffer.from('# UPD:This is fragment');
-    const putRes = await request(app)
+      .send('A fragment');
+    var id = JSON.parse(postResponse.text).fragment.id;
+    const putResponse = await request(app)
       .put(`/v1/fragments/${id}`)
       .auth('user1@email.com', 'password1')
-      .set('Content-Type', 'text/markdown')
-      .send(data2);
-    expect(putRes.statusCode).toBe(400);
+      .set('Content-Type', 'text/html')
+      .send('<h1>Updated fragment</h1>');
+    expect(putResponse.statusCode).toBe(400);
   });
 });
