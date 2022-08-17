@@ -98,13 +98,28 @@ module.exports = async (req, res) => {
           res.status(200).send(data);
         }
         //convert any image to any other image format
-        else if (
-          (extension === '.png' ||
-            extension === '.jpg' ||
-            extension === '.webp' ||
-            extension === '.gif') &&
-          type.startsWith('image/')
-        ) {
+        else if (extension === '.png' && type.startsWith('image/')) {
+          extension = extension.substring(1);
+          data = await sharp(fragmentData).toFormat(extension).toBuffer();
+          logger.info('setting content-type as converted type');
+          res.setHeader('Content-type', 'image/jpeg');
+          logger.info('returning converted fragment data');
+          res.status(200).send(data.toString('base64'));
+        } else if (extension === '.jpg' && type.startsWith('image/')) {
+          extension = extension.substring(1);
+          data = await sharp(fragmentData).toFormat(extension).toBuffer();
+          logger.info('setting content-type as converted type');
+          res.setHeader('Content-type', 'image/jpeg');
+          logger.info('returning converted fragment data');
+          res.status(200).send(data.toString('base64'));
+        } else if (extension === '.webp' && type.startsWith('image/')) {
+          extension = extension.substring(1);
+          data = await sharp(fragmentData).toFormat(extension).toBuffer();
+          logger.info('setting content-type as converted type');
+          res.setHeader('Content-type', 'image/jpeg');
+          logger.info('returning converted fragment data');
+          res.status(200).send(data.toString('base64'));
+        } else if (extension === '.gif' && type.startsWith('image/')) {
           extension = extension.substring(1);
           data = await sharp(fragmentData).toFormat(extension).toBuffer();
           logger.info('setting content-type as converted type');
