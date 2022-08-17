@@ -53,6 +53,7 @@ Authorization: Basic dXNlcjFAZW1haWwuY29tOnBhc3N3b3JkMQ==
 
 # HTTP/1.1 200
 
+
 # 7 Try to GET the fragment again using the url as an authorized user.
 # 8 Confirm that the server returns a 404, since the fragment should be deleted.
 
