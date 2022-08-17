@@ -39,25 +39,25 @@ url: header "Location"
 GET {{url}}
 Authorization: Basic dXNlcjFAZW1haWwuY29tOnBhc3N3b3JkMQ==
 
-# HTTP/1.1 200
-# Content-Type: text/plain
-# Content-Length: 9
-# [Asserts]
-# body == "Hello S3!"
+HTTP/1.1 200
+Content-Type: text/plain
+Content-Length: 9
+[Asserts]
+body == "Hello S3!"
 
 # 5 DELETE the fragment using the url as an authorized user.
 # 6 Confirm that the server returns a 200.
 
-# DELETE {{url}}
-# Authorization: Basic dXNlcjFAZW1haWwuY29tOnBhc3N3b3JkMQ==
+DELETE {{url}}
+Authorization: Basic dXNlcjFAZW1haWwuY29tOnBhc3N3b3JkMQ==
 
-# HTTP/1.1 200
+HTTP/1.1 200
 
 
 # 7 Try to GET the fragment again using the url as an authorized user.
 # 8 Confirm that the server returns a 404, since the fragment should be deleted.
 
-# GET {{url}}
-# Authorization: Basic dXNlcjFAZW1haWwuY29tOnBhc3N3b3JkMQ==
+GET {{url}}
+Authorization: Basic dXNlcjFAZW1haWwuY29tOnBhc3N3b3JkMQ==
 
-# HTTP/1.1 404
+HTTP/1.1 404
