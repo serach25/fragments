@@ -93,6 +93,7 @@ module.exports = async (req, res) => {
           logger.info('returning converted fragment data');
           res.status(200).send(data);
         }
+
         //convert any image to any other image format
         else if (extension.startsWith('image/') && type.startsWith('image/')) {
           console.log('IS IT COMING HERE22222222?');
